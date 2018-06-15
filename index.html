@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>pomodoro</title>
+    <link type="text/css" rel='stylesheet' href='./main.css'/>
+    <link type="text/css" rel='stylesheet' href='./reset.css'/>
+    <script
+          src="https://code.jquery.com/jquery-3.3.1.min.js"
+          integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+          crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <section id='timer-container'>
+      <div>
+        <header>
+          <h1>POMODORO<h1>
+        </header>
+
+          <div class="align-middle align-center" id='timer-config-display'>
+            25 mins
+          </div>
+
+          <div class="align-middle align-center" id='main-timer-display'>
+            25:00
+          </div>
+
+        <div class="align-center" id="timer-controls">
+          <button class="btn" id="start-pause-btn">start</button>
+          <button class="btn" id="reset-btn">reset</button>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      $(document).ready(function(){
+        var clockInUse = false;
+        var timeNow;
+        var timeLater;
+        var interval;
+        var timeRemaining;
+        $('#start-pause-btn').click(function() {
+          var currentText = $(this).text();
+          var nextText = currentText === 'start' ? 'pause' : 'start';
+          if (currentText === 'start') {
+            timeNow = new Date().getTime() / 1000;
+            timeLater = (new Date().getTime() / 1000) + (60 * 25);
+
+            if (timeRemaining) {
+              timeLater = timeLater - timeRemaining;
+              console.log('startRemaining', new Date(timeLater * 1000).getSeconds());
+            }
+
+            interval = setInterval(myTimer, 1000);
+          } else if (currentText === 'pause') {
+            <!-- still need to work on this -->
+            clearTimeout(interval);
+            timeRemaining = timeLater - timeNow;
+            console.log('clearTimeout ', interval);
+          }
+
+          function myTimer() {
+            var timeNow = new Date().getTime() / 1000;
+            timeRemaining = timeLater - timeNow;
+            console.log('timeRemaining', timeRemaining);
+            if (Math.ceil(timeRemaining) < 1) {
+              clearInterval(interval);
+              $('#start-pause-btn').text(function() {
+                return $(this).text().replace(currentText, 'start');
+              });
+              return $('#main-timer-display').html('25:00');
+            }
+            var minutes = new Date(timeRemaining * 1000).getMinutes();
+            var seconds = new Date(timeRemaining * 1000).getSeconds();
+            console.log('minutes ', minutes);
+            console.log('seconds ', seconds);
+            $('#main-timer-display').html(minutes + ':' + seconds);
+          }
+
+          <!-- change text of button start/pause -->
+
+          $(this).text(function() {
+            console.log('currentText ', currentText);
+            return $(this).text().replace(currentText, nextText);
+          });
+
+          $('#reset-btn').click(function() {
+            if (interval) {
+              console.log('clearing interval');
+              clearInterval(interval);
+            }
+          });
+        });
+
+
+      });
+    </script>
+  </body>
+</html>

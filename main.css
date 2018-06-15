@@ -1,0 +1,47 @@
+header {
+  text-align: center;
+}
+
+header h1 { 
+  margin-top: 16px;
+}
+
+#timer-container {
+  height: 500px;
+  width: 100%;
+}
+
+#timer-config-display {
+  height: 100px;
+  width: 150px;
+  font-weight: 600;
+  /* background-color: green; */
+}
+
+#main-timer-display {
+  width: 200px;
+  height: 150px;
+  border: 2px solid grey;
+  font-size: 400;
+}
+
+#timer-controls {
+  margin-top: 16px;
+}
+
+.align-middle {
+  margin: auto;
+}
+
+.btn {
+  height: 50px;
+  width: 80px;
+}
+
+.align-center {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
