@@ -19,7 +19,7 @@
 
         
         <form class="align-middle align-center" id='timer-config-display'>
-          <label for="timer-start">Set Minutes: </label>
+          <label for="timer-start">How long can you concentrate: </label>
           <input type="text" name="timer-start">
         </form>
         
@@ -35,14 +35,12 @@
           <button class="btn" id="reset-btn">reset</button>
         </div>
       </div>
+      <audio preload="auto" id="alarm-audio" src="./Massive_War_With_Alarm-Emmanuel_Exiga-1899079650.mp3">
+      </audio>
     </section>
     
-    <script type="text/javascript" src="jquery.js"></script>
-    <script type="text/javascript" src="jquery-circle-progress.js"></script>
-    <script type="text/javascript" src="jquery-circle-progress-timer.js"></script>
     <script>
       $(document).ready(function(){
-        console.log(circleTimer);
         var clockInUse = false;
         var timeNow;
         var timeLater;
@@ -66,7 +64,6 @@
             $('#next-suggestion').addClass('hide');
           }, 5000);
           pomodoroTime = parseInt(value);
-          console.log('pomodoroTime', typeof pomodoroTime, pomodoroTime);
           restoreDefault();
         });
         
@@ -78,9 +75,14 @@
         
         function restoreDefault() {
           clearInterval(interval);
-          $('#start-pause-btn').text(function() {
+          if (Math.floor(timeRemaining) < 1) {
+            setTimeout(function() { 
+              $('#alarm-audio')[0].pause();
+            }, 15000);
+          }
+           
+          $('#start-btn').text(function() {
             const text = $(this).text();
-            console.log('text ', text);
             return $('#start-pause-btn').text().replace(text, 'start');
           });
           clockInUse = false;
@@ -96,6 +98,7 @@
           timeRemaining = timeLater - timeNow;
                     
           if (Math.floor(timeRemaining) < 1) {
+            $('#alarm-audio')[0].play();
             return restoreDefault();
           };
           
@@ -103,7 +106,9 @@
           var seconds = new Date(timeRemaining * 1000).getSeconds();
           
           $('#main-timer-display').html(
-            minutes + ':' + (Math.floor(seconds) < 10 ? ('0' + seconds) :seconds)
+             (Math.floor(minutes) < 10 ? ('0' + minutes) :minutes)
+              + ':'
+               + (Math.floor(seconds) < 10 ? ('0' + seconds) :seconds)
           );
         }
         
