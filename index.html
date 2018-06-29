@@ -48,6 +48,12 @@
         var timeRemaining;
         var displayTime = '25:00';
         var pomodoroTime = 25;
+
+        // Set Audio volume
+        const alarmElem = $('#alarm-audio');
+        alarmElem.volume = 0.2;
+        console.log('set alarm volume to be tolerable ', alarmElem.volume);
+
         // Set default time on 
         $('#main-timer-display').html(displayTime);
         // Set input default time in form
@@ -81,9 +87,8 @@
             }, 15000);
           }
            
-          $('#start-btn').text(function() {
-            const text = $(this).text();
-            return $('#start-pause-btn').text().replace(text, 'start');
+          $('#start-pause-btn').text(function() {
+            return $(this).text().replace(text, 'start');
           });
           clockInUse = false;
           timeNow;
